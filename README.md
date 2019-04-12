@@ -26,8 +26,8 @@ out-of-distribution noise shown below.
 Moreover, we also propose a robust optimization training scheme **ACET** which minimizes the worst-case noise in 
 a neighbourhood of noise points. This technique improves on top of CEDA on various benchmarks: from evaluation on
 noise to out-of-distribution detection on other image datasets.
-![](images/table_svhn.png)
-![](images/table_cifar100.png)
+<p align="center"><img src="images/table_svhn.png" width="800"></p>
+<p align="center"><img src="images/table_cifar100.png" width="800"></p>
 
 We also illustrate the advantage of ACET on per-image basis. For example, if we train a plain model on MNIST and evaluate
 it on CIFAR-10, it is prone to overconfident predictions (up to 99.6%) on images that do not have anything in common 
@@ -40,8 +40,7 @@ However, ACET mitigates this problem to a large extent.
 Finally, we illustrate Theorem 3.1 experimentally. We observe that simple alpha-scaling (i.e. brightness
 increase) of, e.g., uniform noise can easily lead to overconfident predictions for plain models 
 even in the image domain [0, 1]^d. At the same time, ACET models helps to mitigate this problem as well.
-![](images/table_alpha_scaling.png)
-
+<p align="center"><img src="images/table_alpha_scaling.png" width="800"></p>
 
 ## Models
 
