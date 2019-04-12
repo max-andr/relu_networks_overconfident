@@ -12,16 +12,16 @@
 We give a theoretical argument of why ReLU activation function can lead to models with overconfident 
 predictions far away from the training data. We leverage the fact that a ReLU network partitions the input space on
 the finite set of polytopes.
-![](images/linear_regions.png)
+
+<p align="center"><img src="images/linear_regions.png" width="500"></p>
 
 The intuition is made formal in the main theorem.
-![](images/theorem_3.1.png)
-
+<p align="center"><img src="images/theorem_3.1.png" width="650"></p>
 
 ### New training methods to mitigate the problem
 In order to mitigate this problem, we propose a training scheme **CEDA** that enforces uniform confidences on 
 out-of-distribution noise shown below.
-![](images/our_noise.png)
+<p align="center"><img src="images/our_noise.png" width="800"></p>
 
 Moreover, we also propose a robust optimization training scheme **ACET** which minimizes the worst-case noise in 
 a neighbourhood of noise points. This technique improves on top of CEDA on various benchmarks: from evaluation on
@@ -32,10 +32,9 @@ noise to out-of-distribution detection on other image datasets.
 We also illustrate the advantage of ACET on per-image basis. For example, if we train a plain model on MNIST and evaluate
 it on CIFAR-10, it is prone to overconfident predictions (up to 99.6%) on images that do not have anything in common 
 with digits.
-![](images/images_plain_mnist_cifar10.png)
+<p align="center"><img src="images/images_plain_mnist_cifar10.png" width="800"></p>
 However, ACET mitigates this problem to a large extent.
-![](images/images_acet_mnist_cifar10.png)
-
+<p align="center"><img src="images/images_acet_mnist_cifar10.png" width="800"></p>
 
 ### Experimental confirmation of Theorem 3.1
 Finally, we illustrate Theorem 3.1 experimentally. We observe that simple alpha-scaling (i.e. brightness
