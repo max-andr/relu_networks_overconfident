@@ -1,0 +1,28 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# Mac specific
+.DS_Store
+
+*.ipynb_checkpoints*
+
+#folders
+exps/*
+logs/*
+scripts/*
+datasets/*
+__pycache__*
+
+#picture folders (call files to track image_something and not picture_something)
+*pictures*
+
+*.zip
+*.out
+*.picture
