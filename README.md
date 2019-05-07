@@ -46,7 +46,7 @@ even in the image domain [0, 1]^d. At the same time, ACET models helps to mitiga
 
 ## Models
 
-You can find all the models presented in Table 1 in the folder `exp_paper`. 
+You can find all the models presented in Table 1 in the folder `exps_paper`. 
 The file names of the models contain the hyperparameters used for their training. For example:
 `2019-04-04 16:27:49_dataset=cifar100 model=resnet_small p_norm=inf lmbd=0.0005 at_frac=1.0 pgd_eps=0.3 pgd_niter=40 frac_perm=0.5 loss=max_conf`
 
