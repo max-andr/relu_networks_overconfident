@@ -41,7 +41,8 @@ a neighbourhood of noise points. This works even better.
 <p align="center"><img src="images/acet_two_moons.png" width="500"></p>
 
 Although, as predicted by Theorem 1, overconfident predictions still exist since this is an inherent property
-of ReLU-networks regardless of the training procedure. If we zoom out from [0, 1] to [-10, 10], we can clearly see
+of ReLU-networks regardless of the training procedure. If we zoom out from [0, 1] (where we sampled the uniform
+noise) to [-10, 10], we can clearly see
 that overconfident predictions are still there.
 <p align="center"><img src="images/acet_two_moons_zoom_out.png" width="500"></p>
 
@@ -51,7 +52,7 @@ noise to out-of-distribution detection on other image datasets.
 <p align="center"><img src="images/table_cifar100.png" width="800"></p>
 
 We also illustrate the advantage of **ACET** on per-image basis. For example, if we train a plain model on MNIST and evaluate
-it on CIFAR-10, it is prone to overconfident predictions (up to 99.6%) on images that do not have anything in common 
+it on CIFAR-10, it is also prone to overconfident predictions (up to 99.6%) on images that do not have anything in common 
 with digits.
 <p align="center"><img src="images/images_plain_mnist_cifar10.png" width="800"></p>
 However, **ACET** mitigates this problem to a large extent.
