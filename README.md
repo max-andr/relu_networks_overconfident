@@ -10,7 +10,8 @@
 
 ### Problem of overconfident predictions
 ReLU-networks yield overconfident predictions on unrelated tasks. Here a ResNet-18 was trained on CIFAR-10 and 
-evaluated on SVHN.
+evaluated on SVHN perceives digits as dogs, birds or airplanes with 100% confidence. Clearly, this questions the
+usage of neural networks for safety-critical tasks.
 <p align="center"><img src="images/motivation_svhn.png" width="650"></p>
 
 We can clearly see this on the two moons dataset: the classifier outputs 100% confidence
@@ -22,10 +23,10 @@ almost everywhere, no matter how far away the points are from the training data.
 We give a theoretical argument of why ReLU activation function can lead to models with overconfident 
 predictions far away from the training data. We leverage the fact that a ReLU network partitions the input space on
 the finite set of polytopes.
-<p align="center"><img src="images/linear_regions.png" width="500"></p>
+<p align="center"><img src="images/linear_regions.png" width="600"></p>
 
 The intuition is made formal in the main theorem.
-<p align="center"><img src="images/theorem_3.1.png" width="650"></p>
+<p align="center"><img src="images/theorem_3.1.png" width="700"></p>
 
 ### New training methods to mitigate the problem
 In order to mitigate this problem, we propose a training scheme **CEDA** that enforces uniform confidences on 
@@ -40,7 +41,8 @@ a neighbourhood of noise points. This works even better.
 <p align="center"><img src="images/acet_two_moons.png" width="500"></p>
 
 Although, as predicted by Theorem 1, overconfident predictions still exist since this is an inherent property
-of ReLU-networks regardless of the training procedure.
+of ReLU-networks regardless of the training procedure. If we zoom out from [0, 1] to [-10, 10], we can clearly see
+that overconfident predictions are still there.
 <p align="center"><img src="images/acet_two_moons_zoom_out.png" width="500"></p>
 
 We provide a systematic comparison of **ACET** over plain and **CEDA** models on various benchmarks: from evaluation on
@@ -61,20 +63,14 @@ increase) of, e.g., uniform noise can easily lead to overconfident predictions f
 even in the image domain [0, 1]^d. At the same time, **ACET** models helps to mitigate this problem as well.
 <p align="center"><img src="images/table_alpha_scaling.png" width="800"></p>
 
-## Models
 
-You can find all the models presented in Table 1 in the folder `exps_paper`. 
-The file names of the models contain the hyperparameters used for their training. For example:
-`2019-04-04 16:27:49_dataset=cifar100 model=resnet_small p_norm=inf lmbd=0.0005 at_frac=1.0 pgd_eps=0.3 pgd_niter=40 frac_perm=0.5 loss=max_conf`
-
-means that the model was trained on CIFAR-100, the architecture was `resnet_small` (see `models.ResNetSmall` 
-for its definition), **ACET** was applied on 50% examples in every batch (`at_frac=1.0`) wrt the Linf-norm `eps=0.3`, where 
-the 40 steps of PGD were used in the robust optimization procedure. The loss function used in PGD was the maximum 
-log probability taken over all classes.`frac_perm=0.5` means that the noise is generated
-with 50% uniform and 50% permutation noise. 
+## Code for training ACET models
+`toy2d.ipynb` is a very short notebook that shows how to train an ACET model on two moons dataset. 
+For full-fledged code on how to train CNNs with ACET on multiple GPUs with tensorboard summaries, 
+please take a look onto `train.py`.
 
 
-## Training
+## Training details
 
 Models are created and trained by using the `train.py` script. Get the list of possible arguments via `python3 train.py --help`. 
 
@@ -86,6 +82,18 @@ The value `pgd_niter` determines how many steps of pgd will be applied to the no
 For **ACET**, the parameters `at_frac`, `pgd_niter` and `pgd_eps` should be positive. In the paper, we used `pgd_niter=40` and `pgd_eps=0.3`. While for plain and **CEDA** training the value of `pgd_eps` is not used, you can set it to compare their TensorBoard evaluations. As an example, for training the **ACET** model on SVHN we used the following command: 
 
 `python3 train.py --exp_name='acet_svhn' --gpus=0 --n_epochs=100 --dataset=svhn --model=resnet_small --loss='max_conf' --opt=momentum --lr=0.1 --lmbd=0.0005 --pgd_eps=0.3 --at_frac=1 --pgd_niter=40`
+
+
+## Pre-trained models from the paper
+You can find all the models presented in Table 1 in the folder `exps_paper`. 
+The file names of the models contain the hyperparameters used for their training. For example:
+`2019-04-04 16:27:49_dataset=cifar100 model=resnet_small p_norm=inf lmbd=0.0005 at_frac=1.0 pgd_eps=0.3 pgd_niter=40 frac_perm=0.5 loss=max_conf`
+
+means that the model was trained on CIFAR-100, the architecture was `resnet_small` (see `models.ResNetSmall` 
+for its definition), **ACET** was applied on 50% examples in every batch (`at_frac=1.0`) wrt the Linf-norm `eps=0.3`, where 
+the 40 steps of PGD were used in the robust optimization procedure. The loss function used in PGD was the maximum 
+log probability taken over all classes.`frac_perm=0.5` means that the noise is generated
+with 50% uniform and 50% permutation noise. 
 
 
 ## Evaluation
