@@ -8,11 +8,20 @@
 
 ## Main idea
 
+### Problem of overconfident predictions
+ReLU-networks yield overconfident predictions on unrelated tasks. Here a ResNet-18 was trained on CIFAR-10 and 
+evaluated on SVHN.
+<p align="center"><img src="images/motivation_svhn.png" width="650"></p>
+
+We can clearly see this on the two moons dataset the classifier outputs 100% confidence
+almost everywhere, no matter how far away the points are from the training data.
+<p align="center"><img src="images/plain_two_moons.png" width="500"></p>
+
+
 ### Theoretical argument
 We give a theoretical argument of why ReLU activation function can lead to models with overconfident 
 predictions far away from the training data. We leverage the fact that a ReLU network partitions the input space on
 the finite set of polytopes.
-
 <p align="center"><img src="images/linear_regions.png" width="500"></p>
 
 The intuition is made formal in the main theorem.
@@ -23,8 +32,15 @@ In order to mitigate this problem, we propose a training scheme **CEDA** that en
 out-of-distribution noise shown below.
 <p align="center"><img src="images/our_noise.png" width="800"></p>
 
-Moreover, we also propose a robust optimization training scheme **ACET** which minimizes the worst-case noise in 
-a neighbourhood of noise points. This technique improves on top of CEDA on various benchmarks: from evaluation on
+CEDA already improves on the problem.
+<p align="center"><img src="images/ceda_two_moons.png" width="500"></p>
+
+Next we propose a robust optimization training scheme **ACET** which minimizes the worst-case noise in 
+a neighbourhood of noise points. 
+<p align="center"><img src="images/acet_two_moons.png" width="500"></p>
+
+
+We provide a systematic comparison of ACET over plain and CEDA models on various benchmarks: from evaluation on
 noise to out-of-distribution detection on other image datasets.
 <p align="center"><img src="images/table_svhn.png" width="800"></p>
 <p align="center"><img src="images/table_cifar100.png" width="800"></p>
