@@ -13,7 +13,7 @@ ReLU-networks yield overconfident predictions on unrelated tasks. Here a ResNet-
 evaluated on SVHN.
 <p align="center"><img src="images/motivation_svhn.png" width="650"></p>
 
-We can clearly see this on the two moons dataset the classifier outputs 100% confidence
+We can clearly see this on the two moons dataset: the classifier outputs 100% confidence
 almost everywhere, no matter how far away the points are from the training data.
 <p align="center"><img src="images/plain_two_moons.png" width="500"></p>
 
@@ -32,30 +32,33 @@ In order to mitigate this problem, we propose a training scheme **CEDA** that en
 out-of-distribution noise shown below.
 <p align="center"><img src="images/our_noise.png" width="800"></p>
 
-CEDA already improves on the problem.
+We can see that CEDA already improves on the problem by preventing overconfident predictions.
 <p align="center"><img src="images/ceda_two_moons.png" width="500"></p>
 
 Next we propose a robust optimization training scheme **ACET** which minimizes the worst-case noise in 
-a neighbourhood of noise points. 
+a neighbourhood of noise points. This works even better.
 <p align="center"><img src="images/acet_two_moons.png" width="500"></p>
 
+Although, as predicted by Theorem 1, overconfident predictions still exist since this is an inherent property
+of ReLU-networks regardless of the training procedure.
+<p align="center"><img src="images/acet_two_moons_zoom_out.png" width="500"></p>
 
-We provide a systematic comparison of ACET over plain and CEDA models on various benchmarks: from evaluation on
+We provide a systematic comparison of **ACET** over plain and **CEDA** models on various benchmarks: from evaluation on
 noise to out-of-distribution detection on other image datasets.
 <p align="center"><img src="images/table_svhn.png" width="800"></p>
 <p align="center"><img src="images/table_cifar100.png" width="800"></p>
 
-We also illustrate the advantage of ACET on per-image basis. For example, if we train a plain model on MNIST and evaluate
+We also illustrate the advantage of **ACET** on per-image basis. For example, if we train a plain model on MNIST and evaluate
 it on CIFAR-10, it is prone to overconfident predictions (up to 99.6%) on images that do not have anything in common 
 with digits.
 <p align="center"><img src="images/images_plain_mnist_cifar10.png" width="800"></p>
-However, ACET mitigates this problem to a large extent.
+However, **ACET** mitigates this problem to a large extent.
 <p align="center"><img src="images/images_acet_mnist_cifar10.png" width="800"></p>
 
 ### Experimental confirmation of Theorem 3.1
 Finally, we illustrate Theorem 3.1 experimentally. We observe that simple alpha-scaling (i.e. brightness
 increase) of, e.g., uniform noise can easily lead to overconfident predictions for plain models 
-even in the image domain [0, 1]^d. At the same time, ACET models helps to mitigate this problem as well.
+even in the image domain [0, 1]^d. At the same time, **ACET** models helps to mitigate this problem as well.
 <p align="center"><img src="images/table_alpha_scaling.png" width="800"></p>
 
 ## Models
@@ -65,7 +68,7 @@ The file names of the models contain the hyperparameters used for their training
 `2019-04-04 16:27:49_dataset=cifar100 model=resnet_small p_norm=inf lmbd=0.0005 at_frac=1.0 pgd_eps=0.3 pgd_niter=40 frac_perm=0.5 loss=max_conf`
 
 means that the model was trained on CIFAR-100, the architecture was `resnet_small` (see `models.ResNetSmall` 
-for its definition), ACET was applied on 50% examples in every batch (`at_frac=1.0`) wrt the Linf-norm `eps=0.3`, where 
+for its definition), **ACET** was applied on 50% examples in every batch (`at_frac=1.0`) wrt the Linf-norm `eps=0.3`, where 
 the 40 steps of PGD were used in the robust optimization procedure. The loss function used in PGD was the maximum 
 log probability taken over all classes.`frac_perm=0.5` means that the noise is generated
 with 50% uniform and 50% permutation noise. 
@@ -76,11 +79,11 @@ with 50% uniform and 50% permutation noise.
 Models are created and trained by using the `train.py` script. Get the list of possible arguments via `python3 train.py --help`. 
 
 The value of  `at_frac` determines the number of noise examples (on which the maximal confidence should be small) per clean training example. Thus, if `--at_frac=0`, a **plain** model will be trained.
-For the CEDA and ACET models we report in the paper, we set `--at_frac=1`, which means 50% clean and 50% (adversarial) noise images.
+For the **CEDA** and **ACET** models we report in the paper, we set `--at_frac=1`, which means 50% clean and 50% (adversarial) noise images.
 
 The value `pgd_niter` determines how many steps of pgd will be applied to the noise. If its value is zero, the first random step will not be applied and just the noise will be used -- this is the correct setting for **CEDA** training.
 
-For **ACET**, the parameters `at_frac`, `pgd_niter` and `pgd_eps` should be positive. In the paper, we used `pgd_niter=40` and `pgd_eps=0.3`. While for plain and CEDA training the value of `pgd_eps` is not used, you can set it to compare their TensorBoard evaluations. As an example, for training the ACET model on SVHN we used the following command: 
+For **ACET**, the parameters `at_frac`, `pgd_niter` and `pgd_eps` should be positive. In the paper, we used `pgd_niter=40` and `pgd_eps=0.3`. While for plain and **CEDA** training the value of `pgd_eps` is not used, you can set it to compare their TensorBoard evaluations. As an example, for training the **ACET** model on SVHN we used the following command: 
 
 `python3 train.py --exp_name='acet_svhn' --gpus=0 --n_epochs=100 --dataset=svhn --model=resnet_small --loss='max_conf' --opt=momentum --lr=0.1 --lmbd=0.0005 --pgd_eps=0.3 --at_frac=1 --pgd_niter=40`
 
