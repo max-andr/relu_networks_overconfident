@@ -1,9 +1,11 @@
-# [Why ReLU networks yield high-confidence predictions far away from the training data and how to mitigate the problem](https://arxiv.org/abs/1812.05720) 
+# Why ReLU networks yield high-confidence predictions far away from the training data and how to mitigate the problem 
 **CVPR 2019 (accepted with an oral)**
 
 **Matthias Hein, Maksym Andriushchenko, Julian Bitterwolf**
 
 **University of Tübingen and Saarland University**
+
+[https://arxiv.org/abs/1812.05720](https://arxiv.org/abs/1812.05720)
 
 
 ## Main idea
