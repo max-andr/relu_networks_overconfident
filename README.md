@@ -57,6 +57,7 @@ We also illustrate the advantage of **ACET** on per-image basis. For example, if
 it on CIFAR-10, it is also prone to overconfident predictions (up to 99.6%) on images that do not have anything in common 
 with digits.
 <p align="center"><img src="images/images_plain_mnist_cifar10.png" width="800"></p>
+
 However, **ACET** mitigates this problem to a large extent.
 <p align="center"><img src="images/images_acet_mnist_cifar10.png" width="800"></p>
 
