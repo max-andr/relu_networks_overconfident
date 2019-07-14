@@ -1,2 +1,3 @@
 exps_paper/* linguist-vendored
 images/* linguist-vendored
+*.ipynb linguist-vendored
